@@ -1,0 +1,651 @@
+/* =========================================================================
+   分享卡（固定 CSS 尺寸，导出由 html-to-image 按 pixelRatio 放大）
+   1:1 → 360×360 → 1080×1080 ；3:4 → 360×480 → 1080×1440
+   所有字号/行高显式写死，不依赖父级 rem 或媒体查询，避免导出时排版漂移。
+   ========================================================================= */
+
+/* 分享卡内部一律 border-box：保证 padding 不撑大固定尺寸（导出尺寸精确） */
+.share-card,
+.share-card *,
+.share-card *::before,
+.share-card *::after {
+  box-sizing: border-box;
+}
+
+.share-card {
+  position: relative;
+  overflow: hidden;
+  background: #04070a;
+  /* 用 inset box-shadow 代替真实 border：html-to-image 会把 border 计入导出尺寸，
+     导致 360×360 被导出成 1086×1086。这里保证导出像素严格等于 宽×3。 */
+  box-shadow: inset 0 0 0 1px #1c4b39;
+  color: #dcefe7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  flex: none;
+}
+
+.share-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(92, 255, 157, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(92, 255, 157, 0.06) 1px, transparent 1px);
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.share-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #5cff9d, #5fe8ff 55%, transparent);
+  opacity: 0.9;
+}
+
+.sc-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 14px 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------------- 品牌行 ---------------- */
+
+.sc-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Courier New', Consolas, monospace;
+  height: 22px;
+  flex: none;
+}
+
+.sc-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 18px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #02120a;
+  background: #5cff9d;
+  flex: none;
+}
+
+.sc-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.sc-brand-text b {
+  font-size: 11px;
+  color: #eafff3;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.sc-brand-text i {
+  font-style: normal;
+  font-size: 7px;
+  letter-spacing: 0.18em;
+  color: #45d98c;
+}
+
+.sc-mode {
+  margin-left: auto;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #8aa79f;
+  border: 1px solid #1b3d47;
+  padding: 2px 5px;
+  flex: none;
+}
+
+/* ---------------- 主体 ---------------- */
+
+.sc-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 2px;
+}
+
+.sc-eyebrow {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: #8aa79f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.sc-title {
+  margin: 0;
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+  color: #f2fff8;
+  font-weight: 800;
+  /* 不用 line-clamp：字号已在 TSX 里按字符数收缩，这里只保证不会横向溢出 */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.sc-sub {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.45;
+  color: #a9c6be;
+  overflow-wrap: anywhere;
+}
+
+.sc-score {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 0 4px;
+  border-top: 1px solid #1b3d47;
+  border-bottom: 1px solid #1b3d47;
+  flex-wrap: wrap;
+  flex: none;
+}
+
+.sc-score-num {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 700;
+  color: #5cff9d;
+}
+
+.sc-score-label {
+  font-size: 9px;
+  color: #a9c6be;
+  line-height: 1.2;
+}
+
+.sc-score-label em {
+  font-style: normal;
+  color: #8aa79f;
+  margin-left: 2px;
+}
+
+.sc-score-status {
+  margin-left: auto;
+  font-size: 9px;
+  color: #a9c6be;
+  line-height: 1.2;
+  text-align: right;
+  max-width: 60%;
+}
+
+.sc-readings {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: none;
+}
+
+.sc-reading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 13px;
+}
+
+.sc-reading-name {
+  flex: none;
+  width: 88px;
+  font-size: 9.5px;
+  color: #a9c6be;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc-reading-track {
+  flex: 1;
+  height: 4px;
+  background: #0e1c22;
+  border: 1px solid #1b3d47;
+  overflow: hidden;
+}
+
+.sc-reading-fill {
+  display: block;
+  height: 100%;
+  background: #45d98c;
+}
+
+/* 档位色只作用于填充条（卡片上的文字永远在深色底上，不会被亮色压掉） */
+.sc-reading-fill.level-note {
+  background: #5fe8ff;
+}
+
+.sc-reading-fill.level-warn {
+  background: #ffcf6b;
+}
+
+.sc-reading-fill.level-bad {
+  background: #ff8a94;
+}
+
+.sc-reading-val {
+  flex: none;
+  width: 22px;
+  text-align: right;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 9.5px;
+  color: #dcefe7;
+}
+
+.sc-verdict {
+  margin: 4px 0 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #eafff3;
+  border-left: 2px solid #5cff9d;
+  padding-left: 7px;
+}
+
+.sc-advice {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sc-advice-item {
+  display: flex;
+  gap: 5px;
+  font-size: 8.5px;
+  line-height: 1.4;
+  color: #a9c6be;
+}
+
+.sc-advice-num {
+  flex: none;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 8px;
+  color: #5cff9d;
+}
+
+.sc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 3px;
+  overflow: hidden;
+  max-height: 20px;
+  flex: none;
+}
+
+.sc-tag {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 8px;
+  line-height: 1.4;
+  color: #5fe8ff;
+  border: 1px solid rgba(79, 227, 255, 0.3);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+/* ---------------- 页脚 ---------------- */
+
+.sc-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #1b3d47;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 8.5px;
+}
+
+.sc-url {
+  color: #5cff9d;
+  letter-spacing: 0.04em;
+}
+
+.sc-disc {
+  color: #8aa79f;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------- 比例微调 ---------------- */
+
+.ratio-1x1 .sc-title {
+  /* 方图空间紧，标题最多两行 */
+  max-height: 54px;
+}
+
+.ratio-3x4 .sc-title {
+  max-height: 62px;
+}
+
+.ratio-3x4 .sc-tags {
+  max-height: 18px;
+}
+
+/* ---------------- 分享卡模板：机密档案 ---------------- */
+
+.sc-template-dossier {
+  background: #f4eddc;
+  border-color: #cbbb95;
+  color: #2a2418;
+}
+
+.sc-template-dossier::before {
+  background-image:
+    linear-gradient(to right, rgba(120, 95, 40, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120, 95, 40, 0.07) 1px, transparent 1px);
+}
+
+.sc-template-dossier::after {
+  background: linear-gradient(90deg, #7a5a1e, #b08a3a 55%, transparent);
+}
+
+.sc-template-dossier .sc-logo {
+  color: #fffaf0;
+  background: #7a5a1e;
+}
+
+.sc-template-dossier .sc-brand-text b {
+  color: #241f14;
+}
+
+.sc-template-dossier .sc-brand-text i,
+.sc-template-dossier .sc-url {
+  color: #7a5a1e;
+}
+
+.sc-template-dossier .sc-mode,
+.sc-template-dossier .sc-eyebrow,
+.sc-template-dossier .sc-disc,
+.sc-template-dossier .sc-score-label em {
+  color: #5f5036;
+  border-color: #cbbb95;
+}
+
+.sc-template-dossier .sc-title {
+  color: #241f14;
+}
+
+.sc-template-dossier .sc-sub,
+.sc-template-dossier .sc-reading-name,
+.sc-template-dossier .sc-score-status,
+.sc-template-dossier .sc-score-label,
+.sc-template-dossier .sc-advice-item {
+  color: #4d4029;
+}
+
+.sc-template-dossier .sc-score,
+.sc-template-dossier .sc-foot {
+  border-color: #cbbb95;
+}
+
+.sc-template-dossier .sc-score-num,
+.sc-template-dossier .sc-reading-val,
+.sc-template-dossier .sc-advice-num {
+  color: #7a4a00;
+}
+
+.sc-template-dossier .sc-reading-track {
+  background: #ded2b6;
+  border-color: #c2b189;
+}
+
+.sc-template-dossier .sc-reading-fill {
+  background: #7a8c3f;
+}
+
+.sc-template-dossier .sc-verdict {
+  color: #241f14;
+  border-left-color: #7a5a1e;
+}
+
+.sc-template-dossier .sc-tag {
+  color: #4a3b16;
+  border-color: #b0996b;
+}
+
+.sc-template-dossier .sc-reading-fill.level-note {
+  background: #276b78 !important;
+}
+
+.sc-template-dossier .sc-reading-fill.level-warn {
+  background: #b0741a !important;
+}
+
+.sc-template-dossier .sc-reading-fill.level-bad {
+  background: #9c1c14 !important;
+}
+
+/* ---------------- 分享卡模板：霓虹 ---------------- */
+
+.sc-template-neon {
+  background: #12061a;
+  border-color: #4a1f57;
+}
+
+.sc-template-neon::before {
+  background-image:
+    linear-gradient(to right, rgba(255, 92, 200, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 92, 200, 0.07) 1px, transparent 1px);
+}
+
+.sc-template-neon::after {
+  background: linear-gradient(90deg, #ff5cc8, #7c5cff 55%, transparent);
+}
+
+.sc-template-neon .sc-logo {
+  color: #1a0517;
+  background: #ff5cc8;
+}
+
+.sc-template-neon .sc-brand-text i,
+.sc-template-neon .sc-url,
+.sc-template-neon .sc-score-num,
+.sc-template-neon .sc-reading-val,
+.sc-template-neon .sc-advice-num {
+  color: #ff5cc8;
+}
+
+.sc-template-neon .sc-title {
+  color: #ffe6fb;
+}
+
+.sc-template-neon .sc-tag {
+  color: #ff5cc8;
+  border-color: rgba(255, 92, 200, 0.34);
+}
+
+.sc-template-neon .sc-verdict {
+  border-left-color: #ff5cc8;
+}
+
+.sc-template-neon .sc-score,
+.sc-template-neon .sc-foot {
+  border-color: #4a1f57;
+}
+
+/* =========================================================================
+   分享面板（模态）
+   ========================================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(2, 6, 8, 0.86);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 14px 32px;
+  overflow-y: auto;
+}
+
+.modal {
+  width: 100%;
+  max-width: 520px;
+  background: #060c10;
+  border: 1px solid #1c4b39;
+  border-radius: 2px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-head h2 {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 15px;
+  color: #5cff9d;
+  letter-spacing: 0.04em;
+}
+
+.modal-close {
+  width: 34px;
+  height: 34px;
+  font-size: 14px;
+  color: #a9c6be;
+  background: transparent;
+  border: 1px solid #1b3d47;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #5cff9d;
+  border-color: #45d98c;
+}
+
+.modal-ratio {
+  display: flex;
+  gap: 8px;
+}
+
+.ratio-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 10px;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 13px;
+  color: #a9c6be;
+  background: transparent;
+  border: 1px solid #1b3d47;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.ratio-btn span {
+  font-size: 11px;
+  color: #8aa79f;
+}
+
+.ratio-btn-on {
+  color: #02120a;
+  background: #5cff9d;
+  border-color: #5cff9d;
+}
+
+.ratio-btn-on span {
+  color: #0d3a26;
+}
+
+.modal-preview {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  background: #03080a;
+  border: 1px solid #1b3d47;
+  overflow: hidden;
+}
+
+.preview-scaler {
+  transform-origin: top center;
+  flex: none;
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.modal-status {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.7;
+  min-height: 18px;
+  color: #8aa79f;
+}
+
+.status-busy {
+  color: #ffcf6b;
+}
+
+.status-ok {
+  color: #5cff9d;
+}
+
+.status-err {
+  color: #ff8a94;
+}
+
+/* 窄屏：等比缩小预览（不影响导出尺寸，导出的是未缩放的节点） */
+@media (max-width: 640px) {
+  .modal-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .ratio-btn {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 425px) {
+  .preview-scaler {
+    transform: scale(0.8);
+    margin-bottom: -18%;
+  }
+}
+
+@media (max-width: 355px) {
+  .preview-scaler {
+    transform: scale(0.72);
+    margin-bottom: -28%;
+  }
+
+  .modal-actions {
+    grid-template-columns: 1fr;
+  }
+}

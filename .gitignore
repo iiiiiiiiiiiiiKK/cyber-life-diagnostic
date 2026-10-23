@@ -1,0 +1,14 @@
+﻿node_modules
+dist
+dist-ssr
+.selftest-tmp
+.e2e-out
+.share-check
+.layout-out
+.contrast-out
+*.local
+*.log
+.DS_Store
+
+.shot-*.png
+*.tmp.mjs

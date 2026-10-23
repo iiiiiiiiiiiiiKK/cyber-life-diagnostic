@@ -1,0 +1,57 @@
+{
+  "name": "cyber-life-diagnostic",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "赛博人生诊断器 · 纯前端娱乐模拟扫描（复古终端 + 赛博朋克），不读取任何真实设备数据",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "node scripts/selftest.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "test:share": "node scripts/verify-share.mjs",
+    "test:layout": "node scripts/layout-audit.mjs",
+    "test:contrast": "node scripts/contrast-audit.mjs",
+    "test:all": "npm run build && npm run test && npm run test:e2e && npm run test:share && npm run test:layout && npm run test:contrast"
+  },
+  "dependencies": {
+    "html-to-image": "1.11.13",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "esbuild": "0.21.5",
+    "puppeteer-core": "23.11.1",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  },
+  "homepage": "https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iiiiiiiiiiiiiKK/cyber-life-diagnostic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iiiiiiiiiiiiiKK/cyber-life-diagnostic/issues"
+  },
+  "author": "@0xkillcoin (https://x.com/0xkillcoin)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "typescript",
+    "entertainment",
+    "fun-quiz",
+    "terminal-ui",
+    "cyberpunk",
+    "pure-frontend",
+    "html-to-image"
+  ]
+}
