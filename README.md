@@ -2,12 +2,17 @@
 
 > 把人生当成一台机器，做一次不严肃的体检。
 
+**[🖥 在线体验 →](https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/)**　·　
+**[🐛 提 Issue](https://github.com/iiiiiiiiiiiiiKK/cyber-life-diagnostic/issues)**　·　
+**[𝕏 @0xkillcoin](https://x.com/0xkillcoin)**
+
 [![Deploy](https://github.com/iiiiiiiiiiiiiKK/cyber-life-diagnostic/actions/workflows/deploy.yml/badge.svg)](https://github.com/iiiiiiiiiiiiiKK/cyber-life-diagnostic/actions/workflows/deploy.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-5cff9d.svg)](LICENSE)
+[![Live](https://img.shields.io/badge/live-GitHub%20Pages-5cff9d.svg)](https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-5fe8ff.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3-5fe8ff.svg)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-ffcf6b.svg)](https://vitejs.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-4f8cff.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/tests-4750%20assertions%20passing-5cff9d.svg)](#-测试与验收)
+[![Tests](https://img.shields.io/badge/tests-4776%20assertions-5cff9d.svg)](#-测试与验收)
 [![No Tracking](https://img.shields.io/badge/tracking-none-ff8a94.svg)](#-隐私承诺不是口号)
 
 ---
@@ -20,6 +25,10 @@
 
 检测项全部是虚构的（「拖延缓存占用 78%」「社交接口响应度 41%」），**不读取你的任何真实数据**，
 不申请任何浏览器权限，不联网、不上传、不需要注册。
+
+> [!TIP]
+> **不想读代码？直接玩** → https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/
+> 手机、桌面都能开，20 秒出结果，扫完可以直接存分享图。
 
 > [!IMPORTANT]
 > 本项目是**娱乐内容**，不是心理测评，也不构成任何医疗或心理诊断。
@@ -334,12 +343,13 @@ cyber-life-diagnostic/
 ## ✅ 测试与验收
 
 ```bash
-npm test              # 规则层自测          4556 断言
+npm test              # 规则层自测          4557 断言
 npm run test:e2e      # 浏览器 E2E          84 断言
 npm run test:share    # 分享图导出校验      96 张卡
 npm run test:layout   # 布局体检            4 视口 × 5 页面
 npm run test:contrast # 配色对比度审计      13 页面状态
-npm run test:all      # build + 以上五套
+npm run test:live     # 线上验收（跑已部署站点）25 断言
+npm run test:all      # build + 前五套
 ```
 
 浏览器测试用 `puppeteer-core`（**不下载 Chromium**），自动找本机 Chrome/Edge；
@@ -347,11 +357,12 @@ npm run test:all      # build + 以上五套
 
 | 套件 | 结果 | 覆盖 |
 | --- | :-: | --- |
-| `npm test` | ✅ 4556 / 0 | 题库结构、模块定义、16 类型字段与可达性、评分确定性、报告结构、文本导出、扫描计划时间轴、文案安全 |
+| `npm test` | ✅ 4557 / 0 | 题库结构、模块定义、16 类型字段与可达性、评分确定性、报告结构、文本导出、扫描计划时间轴、文案安全 |
 | `npm run test:e2e` | ✅ 84 / 0 | 完整扫描、跳过、确定性、中途退出、问答、刷新恢复、自定义参数、复制、分享导出（真实落盘 + PNG 头尺寸）、模板切换、重复点击、权限探针、移动端、减少动画、清除数据 |
 | `npm run test:share` | ✅ 10 / 0 | 96 张卡（16×2×3）渲染 + 导出 + PNG 解码 + 文字包围盒不越界 + 中文墨迹检测 + 品牌/网址/声明齐全 |
 | `npm run test:layout` | ✅ 100 / 0 | 横向溢出、右越界、过小正文、点击目标 ≥44px、JS 错误 |
 | `npm run test:contrast` | ✅ 0 不达标 | 逐元素 WCAG 对比度 + 档位色误用 + 标题重叠 + **埋点自检** |
+| `npm run test:live` | ✅ 25 / 0 | **跑线上 GitHub Pages**：声明与模块、作者 𝕏 徽标（44px + noopener）、完整扫描、报告结构、分享图真实下载（两种比例）、三套模板、复制文本、移动端溢出、0 JS 错误 |
 
 手工验收对照（原始需求第 8 条）：
 
@@ -366,13 +377,21 @@ npm run test:all      # build + 以上五套
 
 ## 🚢 部署
 
-### GitHub Pages（已配置）
+### GitHub Pages（线上运行中）
 
-推送到 `main` 即自动构建部署，workflow 见 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)。
+| 地址 | 说明 |
+| --- | --- |
+| **https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/** | 主域名 |
+| **https://321.market/cyber-life-diagnostic/** | 账号已绑的自定义域名 |
+
+推送到 `main` 即自动构建部署，workflow 见 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)：
 
 ```
-https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/
+checkout → setup-node 20 → npm ci → npm run typecheck → npm run build
+        → configure-pages → upload-pages-artifact → deploy-pages
 ```
+
+部署完成后可以用 `npm run test:live` 直接对线上站点跑 25 项验收。
 
 ### 其他平台
 

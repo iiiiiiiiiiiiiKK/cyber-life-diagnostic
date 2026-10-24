@@ -14,7 +14,8 @@
     "test:share": "node scripts/verify-share.mjs",
     "test:layout": "node scripts/layout-audit.mjs",
     "test:contrast": "node scripts/contrast-audit.mjs",
-    "test:all": "npm run build && npm run test && npm run test:e2e && npm run test:share && npm run test:layout && npm run test:contrast"
+    "test:all": "npm run build && npm run test && npm run test:e2e && npm run test:share && npm run test:layout && npm run test:contrast",
+    "test:live": "node scripts/live-audit.mjs"
   },
   "dependencies": {
     "html-to-image": "1.11.13",
