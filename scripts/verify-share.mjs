@@ -12,10 +12,18 @@
  */
 import { build } from 'esbuild';
 import puppeteer from 'puppeteer-core';
-import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { serveStatic } from './serve.mjs';
+
+/** 从源码里读出分享卡页脚用的网址标签，避免测试写死旧域名 */
+const SITE_URL_LABEL = (() => {
+  const src = readFileSync('src/data/site.ts', 'utf8');
+  const m = src.match(/export const SITE_URL_LABEL\s*=\s*'([^']+)'/);
+  if (!m) throw new Error('无法从 src/data/site.ts 读取 SITE_URL_LABEL');
+  return m[1];
+})();
 
 const OUT = join(process.cwd(), '.share-check');
 const WEB = join(OUT, 'web');
@@ -165,7 +173,7 @@ try {
   check('卡片总数 = 16 类型 × 2 比例 × 3 模板', jobs.length === 96, String(jobs.length));
 
   /* ---------- 2. DOM 几何：文字是否完整落在卡内 ---------- */
-  const problems = await page.evaluate(() => {
+  const problems = await page.evaluate((urlNeedle) => {
     const out = [];
     for (const card of document.querySelectorAll('[data-share-card]')) {
       const label = card.closest('.card-wrap')?.querySelector('.meta')?.textContent ?? '';
@@ -209,13 +217,16 @@ try {
       }
 
       // (c) 品牌 / 网址 / 免责声明必须存在
+      // 网址从源码真实值读取，避免改域名后测试写死旧值（曾因此误报 missing-url）
       const text = card.innerText ?? '';
       if (!text.includes('赛博人生诊断器')) out.push({ label, kind: 'missing-brand' });
-      if (!text.includes('cyber-life.example.com')) out.push({ label, kind: 'missing-url' });
+      if (!text.includes(urlNeedle)) {
+        out.push({ label, kind: 'missing-url' });
+      }
       if (!text.includes('娱乐模拟')) out.push({ label, kind: 'missing-disclaimer' });
     }
     return out;
-  });
+  }, SITE_URL_LABEL);
   check('96 张卡片均无裁切 / 越界 / 缺品牌', problems.length === 0, JSON.stringify(problems.slice(0, 4)));
 
   /* ---------- 3. 逐张导出并解码 ---------- */

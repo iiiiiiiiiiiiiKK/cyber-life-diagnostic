@@ -6,8 +6,8 @@
 
 export const SITE_NAME = '赛博人生诊断器';
 export const SITE_NAME_EN = 'CYBER LIFE DIAGNOSTIC';
-export const SITE_URL = 'https://cyber-life.example.com';
-export const SITE_URL_LABEL = 'cyber-life.example.com';
+export const SITE_URL = 'https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/';
+export const SITE_URL_LABEL = 'iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic';
 export const SITE_TAGLINE = '把人生当成一台机器，做一次不严肃的体检';
 export const SITE_VERSION = 'v1.0 / SIM-ONLY';
 

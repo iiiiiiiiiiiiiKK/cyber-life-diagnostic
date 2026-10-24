@@ -43,6 +43,7 @@ const {
   progressAt,
   toPlainText,
   toMarkdown,
+  SITE_URL,
   SCAN_PHASES,
   CUSTOM_PARAMS,
   CUSTOM_PRESETS,
@@ -282,7 +283,9 @@ check('纯文本含编号', text.includes(sample.serial));
 check('纯文本含 8 项读数', sample.readings.every((r) => text.includes(r.name)));
 check('纯文本含 3 条建议', sample.archetype.advice.every((a) => text.includes(a)));
 check('纯文本含免责声明', text.includes('娱乐模拟'));
-check('纯文本含网址', text.includes('cyber-life.example.com'));
+// 网址断言不写死域名：从打包后的 SITE_URL 读取，改域名时测试自动跟随
+check('纯文本含网址', text.includes(SITE_URL));
+check('Markdown 含网址', toMarkdown(sample).includes(SITE_URL));
 const md = toMarkdown(sample);
 check('Markdown 含表格', md.includes('| 检测项目 | 读数 | 档位 |'));
 check('Markdown 含结论', md.includes(sample.archetype.verdict));

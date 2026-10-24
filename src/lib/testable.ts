@@ -26,4 +26,4 @@ export { QUESTIONS, QUESTION_SET_VERSION } from '../data/questions';
 export { ARCHETYPES } from '../data/archetypes';
 export { CUSTOM_PARAMS, CUSTOM_PRESETS, DEFAULT_CUSTOM } from '../data/custom';
 export { TEMPLATES, TEMPLATE_MAP, normalizeTemplate } from '../data/templates';
-export { PRIVACY_POINTS, DISCLAIMER_LIST, SIM_RULE_TEXT } from '../data/site';
+export { PRIVACY_POINTS, DISCLAIMER_LIST, SIM_RULE_TEXT, SITE_URL, SITE_URL_LABEL, AUTHOR_X_URL } from '../data/site';

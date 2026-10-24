@@ -13,6 +13,14 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import { join } from 'node:path';
 import { serveStatic } from './serve.mjs';
 
+/** 从源码读网址标签，避免测试写死域名（改域名后断言自动跟随） */
+const SITE_URL_LABEL = (() => {
+  const src = readFileSync(join(process.cwd(), 'src/data/site.ts'), 'utf8');
+  const m = src.match(/export const SITE_URL_LABEL\s*=\s*'([^']+)'/);
+  if (!m) throw new Error('无法读取 SITE_URL_LABEL');
+  return m[1];
+})();
+
 const OUT = join(process.cwd(), '.e2e-out');
 mkdirSync(OUT, { recursive: true });
 
@@ -318,7 +326,7 @@ try {
     copyLabel,
   );
   const copyPayload = await page.evaluate(() => window.__lastCopied ?? '');
-  check('复制内容包含结果名称与网址', copyPayload.includes('cyber-life.example.com'), copyPayload.slice(0, 40));
+  check('复制内容包含结果名称与网址', copyPayload.includes(SITE_URL_LABEL), copyPayload.slice(0, 40));
 
   /* ------------------------------------------------------------------ */
   section('8. 分享图导出（1:1 与 3:4）');
@@ -347,7 +355,7 @@ try {
   const shareText = await page.evaluate(() => document.querySelector('[role="dialog"]')?.innerText ?? '');
   check('分享面板有品牌名', shareText.includes('赛博人生诊断器'));
   const cardText = await page.evaluate(() => document.querySelector('[data-share-card]')?.innerText ?? '');
-  check('分享卡含网址', cardText.includes('cyber-life.example.com'));
+  check('分享卡含网址', cardText.includes(SITE_URL_LABEL));
   check('分享卡含娱乐声明', cardText.includes('娱乐模拟'));
 
   // 真实点一次下载，验证 Blob 生成链路

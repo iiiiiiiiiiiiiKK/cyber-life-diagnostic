@@ -403,7 +403,8 @@ npm ci && npm run build
 4. 系统分享（`navigator.share`）需移动端浏览器 + HTTPS，不满足时降级为下载。
 5. 未做多语言，界面文案为简体中文硬编码。
 6. 未使用路由库，刷新回首页（结果与进度靠 `localStorage` 恢复）；暂无可分享的结果链接。
-7. `src/data/site.ts` 里的 `SITE_URL` 是占位域名，正式发布前请替换（分享图页脚会用到）。
+7. ~~`SITE_URL` 是占位域名~~ —— 已改为真实部署地址 `https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/`，
+   分享图页脚与复制文本都会带上它。若要换域名，只改 `src/data/site.ts` 一处，测试会自动跟随。
 
 ---
 
