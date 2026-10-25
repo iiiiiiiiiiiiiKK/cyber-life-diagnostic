@@ -379,10 +379,7 @@ npm run test:all      # build + 前五套
 
 ### GitHub Pages（线上运行中）
 
-| 地址 | 说明 |
-| --- | --- |
-| **https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/** | 主域名 |
-| **https://321.market/cyber-life-diagnostic/** | 账号已绑的自定义域名 |
+**https://iiiiiiiiiiiiiKK.github.io/cyber-life-diagnostic/**
 
 推送到 `main` 即自动构建部署，workflow 见 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)：
 
@@ -392,6 +389,19 @@ checkout → setup-node 20 → npm ci → npm run typecheck → npm run build
 ```
 
 部署完成后可以用 `npm run test:live` 直接对线上站点跑 25 项验收。
+
+<details>
+<summary><b>为什么不用 <code>321.market/cyber-life-diagnostic/</code> 这种子路径？</b></summary>
+
+因为 `321.market` 这个**主域名已经绑给了另一个仓库**（`adam-3d-portfolio`）。
+GitHub Pages 的规则是：一个自定义域名只能属于一个仓库，并把这个仓库挂在**域名根**上
+（`321.market/` → 那个仓库的首页）。所以访问 `321.market/cyber-life-diagnostic/`
+会被那个仓库接手，再由它自己的前端路由返回 404 —— 这和本项目无关。
+
+要用自定义域名，正确的做法是**子域名**（`cyber-life.321.market` → CNAME 到
+`iiiiiiiiiiiiiKK.github.io`），跟同账号下的 `cyberhuman.321.market`、`web.321.market` 一样。
+本仓库目前只使用 `github.io` 域名，没有绑定自定义域名。
+</details>
 
 ### 其他平台
 
